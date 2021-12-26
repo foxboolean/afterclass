@@ -2,6 +2,7 @@ package dao
 
 import (
 	"database/sql"
+	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 )
@@ -19,6 +20,8 @@ func NewDB() *sql.DB {
 	dsn := dbc.username + ":" +
 		dbc.password + "@tcp(" + dbc.host + ":3306)/" +
 		dbc.dbname + ")?charset=utf8mb4&parseTime=True"
+	fmt.Printf("%v\n", dsn)
+	dsn = "root:123456@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=True"
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		panic(err)

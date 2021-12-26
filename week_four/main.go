@@ -1,15 +1,15 @@
 package main
 
 import (
-	api "afterclass/week_four/api"
+	"afterclass/week_four/api"
 	"context"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
+	"golang.org/x/sync/errgroup"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-
-	"golang.org/x/sync/errgroup"
 )
 
 func main() {
@@ -58,13 +58,13 @@ func Signal(ctx context.Context, c chan os.Signal) error {
 	}
 }
 
-type WorkHandler struct {}
+type WorkHandler struct{}
 
 func (work *WorkHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	fmt.Printf("Server start \n")
-	ua:=api.NewUserApi(InitUserService())
+	ua := api.NewUserApi(InitUserService())
 	result := ua.QueryUserInfo(api.NewRequestInfo("1"))
-	fmt.Printf("result is %v", result)
+	fmt.Printf("result is %+v", result)
 }
 
 func NewWorkHandler() *WorkHandler {

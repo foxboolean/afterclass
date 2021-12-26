@@ -1,8 +1,8 @@
 package service
 
 import (
-	"afterclass/week_four/api"
 	"afterclass/week_four/internal/biz"
+	"afterclass/week_four/internal/dao"
 	"context"
 )
 
@@ -16,10 +16,6 @@ func NewUserService(ubiz *biz.UserBiz) *UserService{
 	}
 }
 
-func (u *UserService) UserInfo(ctx context.Context, request *api.RequestInfo) (*api.Result) {
-	user, err := u.ubiz.GetUserById(request.Id)
-	if err != nil {
-		return api.NewResult(nil, err)
-	}
-	return api.NewResult(user, err)
+func (u *UserService) UserInfo(ctx context.Context, id string) (*dao.User, error) {
+	return u.ubiz.GetUserById(id)
 }
