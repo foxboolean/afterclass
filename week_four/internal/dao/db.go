@@ -33,7 +33,7 @@ func (dbc *dbConfig) loadYaml() *dbConfig {
 	if err != nil {
 		panic(err)
 	}
-	appConfigPath := filepath.Join(WorkPath, "/week_four/config/config.yaml")
+	appConfigPath := filepath.Join(WorkPath, "/week_four/config/config.yml")
 	yamlFile, err := ioutil.ReadFile(appConfigPath)
 	err = yaml.Unmarshal(yamlFile, dbc)
 	if err != nil {
