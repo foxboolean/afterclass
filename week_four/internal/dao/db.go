@@ -2,26 +2,25 @@ package dao
 
 import (
 	"database/sql"
-	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
 type dbConfig struct {
-	host     string `yaml:"host"`
-	dbname   string `yaml:"dbname"`
-	username string `yaml:"username"`
-	password string `yaml:"password"`
+	Host     string `yaml:"host"`
+	Dbname   string `yaml:"dbname"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
 }
 
 func NewDB() *sql.DB {
 	var dbc dbConfig
 	dbc.loadYaml()
-	dsn := dbc.username + ":" +
-		dbc.password + "@tcp(" + dbc.host + ":3306)/" +
-		dbc.dbname + ")?charset=utf8mb4&parseTime=True"
-	fmt.Printf("%v\n", dsn)
-	dsn = "root:123456@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=True"
+	dsn := dbc.Username + ":" +
+		dbc.Password + "@tcp(" + dbc.Host + ")/" +
+		dbc.Dbname + "?charset=utf8mb4&parseTime=True"
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		panic(err)
@@ -30,7 +29,12 @@ func NewDB() *sql.DB {
 }
 
 func (dbc *dbConfig) loadYaml() *dbConfig {
-	yamlFile, err := ioutil.ReadFile("../../config/conf.yml")
+	WorkPath, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	appConfigPath := filepath.Join(WorkPath, "/week_four/config/config.yaml")
+	yamlFile, err := ioutil.ReadFile(appConfigPath)
 	err = yaml.Unmarshal(yamlFile, dbc)
 	if err != nil {
 		panic(err)
