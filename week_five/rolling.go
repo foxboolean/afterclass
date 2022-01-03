@@ -8,6 +8,7 @@ import (
 // Number tracks a numberBucket over a bounded number of
 // time buckets. Currently the buckets are one second long and only the last 10 seconds are kept.
 type Number struct {
+	// unix 为 key
 	Buckets map[int64]*numberBucket
 	Mutex   *sync.RWMutex
 }
@@ -42,7 +43,6 @@ func (r *Number) removeOldBuckets() {
 	now := time.Now().Unix() - 10
 
 	for timestamp := range r.Buckets {
-		// TODO: configurable rolling window
 		if timestamp <= now {
 			delete(r.Buckets, timestamp)
 		}
